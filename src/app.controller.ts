@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { BooksService } from './app.service';
 import { Book } from './FakeDatabase';
 
@@ -15,5 +15,14 @@ export class BooksController {
   getBookById(@Param('id') id: string): Book | undefined {
     const bookId = +id;
     return this.bookService.findById(bookId);
+  }
+
+  @Post()
+  addBook(@Body() book: Partial<Book>): Book | undefined {
+    const bookData = book;
+
+    if (!book.author || !book.publicationYear || !book.title) return undefined;
+
+    return this.bookService.create(bookData);
   }
 }
