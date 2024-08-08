@@ -23,4 +23,23 @@ export class BooksService {
     books.push(newBook);
     return newBook;
   }
+
+  update(bookID: number, updateBookFields: Partial<Book>): Book | undefined {
+    const currentBook = books.find((book) => book.id === bookID);
+    const updatedBook = {
+      id: bookID,
+      title: updateBookFields.title ?? currentBook.title,
+      author: updateBookFields.author ?? currentBook.author,
+      publicationYear:
+        updateBookFields.publicationYear ?? currentBook.publicationYear,
+    };
+
+    books[bookID - 1] = updatedBook;
+    return updatedBook;
+  }
+
+  delete(bookID: number): Book[] {
+    books.splice(bookID - 1, 1);
+    return books;
+  }
 }

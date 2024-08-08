@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { BooksService } from './app.service';
 import { Book } from './FakeDatabase';
 
@@ -24,5 +32,18 @@ export class BooksController {
     if (!book.author || !book.publicationYear || !book.title) return undefined;
 
     return this.bookService.create(bookData);
+  }
+
+  @Put(':id')
+  updateBook(
+    @Param('id') id: string,
+    @Body() book: Partial<Book>,
+  ): Book | undefined {
+    return this.bookService.update(+id, book);
+  }
+
+  @Delete(':id')
+  deleteBook(@Param('id') id: string): Book[] {
+    return this.bookService.delete(+id);
   }
 }
